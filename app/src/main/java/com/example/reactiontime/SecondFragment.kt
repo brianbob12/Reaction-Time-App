@@ -12,6 +12,7 @@ import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import java.io.File
 import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
 import kotlin.random.Random
@@ -40,6 +41,7 @@ class SecondFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         view.findViewById<Button>(R.id.readyButton).setOnClickListener{
+            listening=false
             //hide buttons
             view.findViewById<Button>(R.id.button_second).visibility=View.INVISIBLE
             view.findViewById<Button>(R.id.button_second).isClickable=false
@@ -83,9 +85,17 @@ class SecondFragment : Fragment() {
                 view.findViewById<Button>(R.id.readyButton).visibility=View.VISIBLE
                 view.findViewById<Button>(R.id.readyButton).isClickable=true
                 view.findViewById<TextView>(R.id.messageText).visibility=View.VISIBLE
-                view.findViewById<TextView>(R.id.messageText).text="Time:"+LocalDateTime.from(startTime).until(LocalDateTime.now(), ChronoUnit.MILLIS)+" miliseconds"
+                val score=LocalDateTime.from(startTime).until(LocalDateTime.now(), ChronoUnit.MILLIS)
+                view.findViewById<TextView>(R.id.messageText).text="Time:"+score+" miliseconds"
+                if((getActivity()as MainActivity).bestTime<0 ||(getActivity()as MainActivity).bestTime>score){
+                    (getActivity()as MainActivity).bestTime= score.toDouble()
+                    var file= File(context?.filesDir,"bestTime.txt")
+                    file.writeText((getActivity()as MainActivity).bestTime.toString())
+                }
+                listening=false
+                started=false
             }
-            else{
+            else if(started){
                 //clicking before the greeen screen
                 view.setBackgroundColor(Color.RED)
                 started=false

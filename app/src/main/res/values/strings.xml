@@ -9,5 +9,5 @@
     <string name="ready">Ready</string>
 
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
-    <string name="hello_introduction_fragment">hello introduction fragment</string>
+    <string name="hello_introduction_fragment">Test your reaction time</string>
 </resources>
